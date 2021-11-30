@@ -68,5 +68,15 @@ describe("app", () => {
           });
         });
     });
+    test("status: 404, respond with an error message", () => {
+      return request(app)
+        .get("/api/topics/mitch")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("topic not found");
+        });
+    });
   });
+
+  describe("GET /api/articles/:article_id", () => {});
 });
