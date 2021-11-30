@@ -1,6 +1,15 @@
 exports.handlePsqlError = (err, req, res, next) => {
   if (err.code) {
-    res.staus(400).send({ message: "Invalid inputs" });
+    res.status(400).send({ message: "Invalid inputs" });
+  } else {
+    next(err);
+  }
+};
+
+exports.handleCustomsError = (err, req, res, next) => {
+  if (err.status && err.message) {
+    const { status, message } = err;
+    res.status(status).send({ message });
   } else {
     next(err);
   }
