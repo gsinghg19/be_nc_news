@@ -247,3 +247,81 @@ describe("GET /api/articles/:article_id/comments", () => {
     expect(body.commentsByArticleId).toEqual([]);
   });
 });
+
+describe("POST /api/articles/:articles_id/comments", () => {
+  test("201: request a body of objects, that responds with the associated posted comment", async () => {
+    const article_id = 1;
+    const newComment = {
+      username: "butter_bridge",
+      body: "Test comment 123",
+    };
+    const { body } = await request(app)
+      .post(`/api/articles/${article_id}/comments`)
+      .send(newComment)
+      .expect(201);
+    expect(body.postedComment).toMatchObject([
+      {
+        comment_id: expect.any(Number),
+        article_id: expect.any(Number),
+        votes: expect.any(Number),
+        body: expect.any(String),
+        created_at: expect.any(String),
+      },
+    ]);
+  });
+  test("400: responds with Bad Request for invalid id", async () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "Test comment 123",
+    };
+    const { body } = await request(app)
+      .post(`/api/articles/£@*madeup**@/comments`)
+      .send(newComment)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  test("404: response for non-existing a Id", async () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "Test comment 123",
+    };
+    const { body } = await request(app)
+      .post("/api/articles/99999/comments")
+      .send(newComment)
+      .expect(404);
+    expect(body.msg).toBe("Not Found");
+  });
+  test("400: Missing required information in fields", async () => {
+    const newComment = {
+      username: "butter_bridge",
+    };
+    const { body } = await request(app)
+      .post("/api/articles/1/comments")
+      .send(newComment)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  test("404: response for username not existing", async () => {
+    const newComment = {
+      username: "non_existing_username",
+      body: "Test comment 123",
+    };
+    const { body } = await request(app)
+      .post("/api/articles/1/comments")
+      .send(newComment)
+      .expect(404);
+    expect(body.msg).toBe("Not Found");
+  });
+});
+
+describe("DELETE /api/comments/:comment_id", () => {
+  test("204: response for deleting comments by comment_id", async () => {
+    const comment_id = 1;
+    const { body } = await request(app)
+      .delete(`/api/comments/${comment_id}`)
+      .expect(204);
+    const { commentBody } = await request(app)
+      .get(`/api/comments/${comment_id}`)
+      .expect(404);
+  });
+});
