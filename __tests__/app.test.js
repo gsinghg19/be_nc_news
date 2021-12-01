@@ -145,4 +145,33 @@ describe("GET /api/articles", () => {
       descending: true,
     });
   });
+  test("200: sorts all by title", async () => {
+    const { body } = await request(app)
+      .get("/api/articles?sort_by=title")
+      .expect(200);
+    expect(body.allArticles).toBeSorted({ key: "title", descending: true });
+  });
+  test("200: sort all article authors in ascending order", async () => {
+    const { body } = await request(app)
+      .get("/api/articles?sort_by=author&order=asc")
+      .expect(200);
+    expect(body.allArticles).toBeSorted({ key: "author", descending: false });
+  });
+  test("200: Sorts all articles ascending by article_id", async () => {
+    const { body } = await request(app)
+      .get("/api/articles?sort_by=article_id&order=asc")
+      .expect(200);
+    expect(body.allArticles).toBeSorted({
+      key: "article_id",
+      descending: false,
+    });
+  });
+  test("200: responds with topics passed by query", async () => {
+    const { body } = await request(app)
+      .get(`/api/articles?topic=paper`)
+      .expect(200);
+    body.allArticles.forEach((article) => {
+      expect(article.topic).toEqual("paper");
+    });
+  });
 });
