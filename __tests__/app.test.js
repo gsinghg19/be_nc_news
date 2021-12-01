@@ -174,4 +174,36 @@ describe("GET /api/articles", () => {
       expect(article.topic).toEqual("paper");
     });
   });
+  test("200: responds with valid query but no associated article", async () => {
+    const { body } = await request(app)
+      .get(`/api/articles?topic=I_like_pizza`)
+      .expect(200);
+    expect(body.allArticles).toEqual([]);
+  });
+  test("400: column is not available", async () => {
+    const { body } = await request(app)
+      .get(`/api/articles?sort_by=me_fail_english_thats_unimpossible`)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  test("400: the order is neither ascending or descending", async () => {
+    const { body } = await request(app)
+      .get(`/api/articles?order=lots_of_stuff_going_wrong`)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  test("200: responds with first 10 articles as default", async () => {
+    const { body } = await request(app).get(`/api/articles`).expect(200);
+    expect(body.allArticles).toHaveLength(10);
+  });
+  test("200: responds to the first two articles set by limits", async () => {
+    const { body } = await request(app)
+      .get(`/api/articles?limit=2`)
+      .expect(200);
+    expect(body.allArticles).toHaveLength(2);
+  });
+  test("200: responds to changes to the page query", async () => {
+    const { body } = await request(app).get(`/api/articles?p=2`).expect(200);
+    expect(body.allArticles).toHaveLength(2);
+  });
 });
