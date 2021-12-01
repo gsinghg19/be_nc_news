@@ -207,3 +207,43 @@ describe("GET /api/articles", () => {
     expect(body.allArticles).toHaveLength(2);
   });
 });
+
+describe("GET /api/articles/:article_id/comments", () => {
+  test("200: Responds with an array of comments for given article", async () => {
+    const article_id = 1;
+    const { body } = await request(app)
+      .get(`/api/articles/${article_id}/comments`)
+      .expect(200);
+    expect(body.commentsByArticleId.length).toBeGreaterThan(0);
+    body.commentsByArticleId.forEach((comment) => {
+      expect(comment).toMatchObject({
+        comment_id: expect.any(Number),
+        votes: expect.any(Number),
+        body: expect.any(String),
+        created_at: expect.any(String),
+      });
+    });
+  });
+  test("404: Not Found for empty article", async () => {
+    const article_id = 999999;
+    const { body } = await request(app)
+      .get(`/api/articles/${article_id}/comments`)
+      .expect(404);
+    expect(body.msg).toBe("Not Found");
+  });
+  test("400: Bad request for invalid article_id", async () => {
+    const article_id = "splatoon";
+    const { body } = await request(app)
+      .get(`/api/articles/${article_id}/comments`)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  test("200: valid ID, but has no comments responds with empty array", async () => {
+    const article_id = 2;
+    const { body } = await request(app)
+      .get(`/api/articles/${article_id}/comments`)
+      .expect(200);
+
+    expect(body.commentsByArticleId).toEqual([]);
+  });
+});
