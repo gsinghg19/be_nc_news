@@ -6,7 +6,8 @@
   "scripts": {
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
-    "test": "jest"
+    "test": "jest",
+    "jest": "jest-sorted"
   },
   "repository": {
     "type": "git",
@@ -23,9 +24,11 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jest": "^27.4.0",
-    "jest-sorted": "^1.0.12",
     "pg": "^8.7.1",
     "pg-format": "^1.0.4",
     "supertest": "^6.1.6"
+  },
+  "devDependencies": {
+    "jest-sorted": "^1.0.12"
   }
 }

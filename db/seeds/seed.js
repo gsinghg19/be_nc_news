@@ -1,124 +1,114 @@
-const db = require("../connection.js");
+const db = require("../connection");
 const format = require("pg-format");
+const {
+  formatTopicsData,
+  formatUsersData,
+  formatArticlesData,
+  formatCommentsData,
+} = require("../../utils/utils");
 
 const seed = (data) => {
   const { articleData, commentData, topicData, userData } = data;
-
-  return db.query(`DROP TABLE IF EXISTS comments`).then(() => {
-    return db.query(`DROP TABLE IF EXISTS articles`).then(() => {
-      return db.query(`DROP TABLE IF EXISTS topics`).then(() => {
-        return db
-          .query(`DROP TABLE IF EXISTS users`)
-          .then(() => {
-            return db.query(
-              `CREATE TABLE users(
-            username VARCHAR PRIMARY KEY NOT NULL,
-            avatar_url VARCHAR,
-            name VARCHAR
-          );`
-            );
-          })
-          .then(() => {
-            return db.query(
-              `CREATE TABLE topics(
-                slug VARCHAR PRIMARY KEY NOT NULL,
-                description VARCHAR
-              );`
-            );
-          })
-          .then(() => {
-            return db.query(
-              `CREATE TABLE articles(
-                  article_id SERIAL PRIMARY KEY,
-                  title VARCHAR NOT NULL,
-                  body VARCHAR NOT NULL,
-                  votes INT DEFAULT 0,
-                  topic VARCHAR REFERENCES topics(slug),
-                  author VARCHAR REFERENCES users(username) NOT NULL,
-                  created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-                );`
-            );
-          })
-          .then(() => {
-            return db.query(
-              `CREATE TABLE comments(
-                  comment_id SERIAL PRIMARY KEY,
-                  author VARCHAR REFERENCES users(username) NOT NULL,
-                  article_id INT REFERENCES articles(article_id) ON DELETE CASCADE NOT NULL,
-                  votes INT DEFAULT 0,
-                  created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-                  body VARCHAR NOT NULL
-                )`
-            );
-          })
-
-          .then(() => {
-            const queryStr = format(
-              `INSERT INTO users(username, avatar_url, name)
-            VALUES %L;`,
-              userData.map((user) => {
-                return [user.username, user.avatar_url, user.name];
-              })
-            );
-            return db.query(queryStr);
-          })
-          .then(() => {
-            const queryStr = format(
-              `INSERT INTO topics(slug, description)
-            VALUES %L;`,
-              topicData.map((topic) => {
-                return [topic.slug, topic.description];
-              })
-            );
-            return db.query(queryStr);
-          })
-          .then(() => {
-            const queryStr = format(
-              `INSERT INTO articles(
-                title,
-                body,
-                votes,
-                topic,
-                author,
-                created_at)
-            VALUES %L;`,
-              articleData.map((article) => {
-                return [
-                  article.title,
-                  article.body,
-                  article.votes,
-                  article.topic,
-                  article.author,
-                  article.created_at,
-                ];
-              })
-            );
-            return db.query(queryStr);
-          })
-          .then(() => {
-            const queryStr = format(
-              `INSERT INTO comments(
-                author,
-                article_id,
-                votes,
-                created_at,
-                body)
-            VALUES %L;`,
-              commentData.map((comment) => {
-                return [
-                  comment.author,
-                  comment.article_id,
-                  comment.votes,
-                  comment.created_at,
-                  comment.body,
-                ];
-              })
-            );
-            return db.query(queryStr);
-          });
-      });
+  return db
+    .query("DROP TABLE IF EXISTS topics CASCADE;")
+    .then(() => {
+      return db.query("DROP TABLE IF EXISTS users CASCADE;");
+    })
+    .then(() => {
+      return db.query("DROP TABLE IF EXISTS articles CASCADE;");
+    })
+    .then(() => {
+      return db.query("DROP TABLE IF EXISTS comments CASCADE;");
+    })
+    .then(() => {
+      return db.query(`
+    CREATE TABLE topics (
+      slug VARCHAR(100) PRIMARY KEY,
+      description VARCHAR(500) NOT NULL
+    );`);
+    })
+    .then(() => {
+      return db.query(`
+    CREATE TABLE users (
+      username VARCHAR(100) PRIMARY KEY,
+      avatar_url TEXT,
+      name TEXT NOT NULL
+    );`);
+    })
+    .then(() => {
+      return db.query(`
+   CREATE TABLE articles (
+     article_id SERIAL PRIMARY KEY,
+      title VARCHAR(200) NOT NULL,
+      body VARCHAR(2000) NOT NULL,
+      votes INT DEFAULT 0,
+      topic VARCHAR(200) NOT NULL REFERENCES topics(slug) ON DELETE CASCADE,
+      author VARCHAR(100) NOT NULL REFERENCES users(username) ON DELETE CASCADE,
+      created_at TIMESTAMP DEFAULT NOW()
+   );`);
+    })
+    .then(() => {
+      return db.query(`
+    CREATE TABLE comments (
+      comment_id SERIAL PRIMARY KEY,
+      author VARCHAR(100) NOT NULL REFERENCES users(username) ON DELETE CASCADE,
+      article_id INT REFERENCES articles(article_id) ON DELETE CASCADE,
+      votes INT DEFAULT 0,
+      created_at TIMESTAMP DEFAULT NOW(),
+      body TEXT NOT NULL
+    );`);
+      S;
+    })
+    .then(() => {
+      const queryStr = format(
+        `INSERT INTO topics
+    (slug, description)
+    VALUES
+    %L
+    RETURNING *;
+    `,
+        formatTopicsData(topicData)
+      );
+      return db.query(queryStr);
+    })
+    .then(() => {
+      const queryStr = format(
+        ` INSERT INTO users
+      (username, avatar_url, name)
+      VALUES
+      %L
+      RETURNING *;
+      `,
+        formatUsersData(userData)
+      );
+      return db.query(queryStr);
+    })
+    .then(() => {
+      const queryStr = format(
+        `
+    INSERT INTO articles
+    (title, topic, author, body, created_at, votes)
+    VALUES
+    %L
+    RETURNING *;
+    `,
+        formatArticlesData(articleData)
+      );
+      return db.query(queryStr);
+    })
+    .then((result) => {
+      const queryStr = format(
+        `
+    INSERT INTO comments
+    (body, votes, author, article_id, created_at)
+    VALUES
+    %L
+    RETURNING *;
+    `,
+        formatCommentsData(commentData)
+      );
+      return db.query(queryStr);
     });
-  });
 };
 
 module.exports = seed;

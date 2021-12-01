@@ -1,15 +1,15 @@
 exports.handlePsqlError = (err, req, res, next) => {
   if (err.code) {
-    res.status(400).send({ message: "Invalid inputs" });
+    res.status(400).send({ msg: "Bad Request" });
   } else {
     next(err);
   }
 };
 
 exports.handleCustomsError = (err, req, res, next) => {
-  if (err.status && err.message) {
-    const { status, message } = err;
-    res.status(status).send({ message });
+  if (err.status && err.msg) {
+    const { status, msg } = err;
+    res.status(status).send({ msg });
   } else {
     next(err);
   }
@@ -17,5 +17,5 @@ exports.handleCustomsError = (err, req, res, next) => {
 
 exports.handle500ServerError = (err, req, res, next) => {
   console.log(err);
-  res.status(500).send({ message: "Internal server error" });
+  res.status(500).send({ msg: "Internal server error" });
 };

@@ -1,9 +1,10 @@
-const { getJsonDescriptions } = require("../models/api.models");
+const { fetchEndpoints } = require("../models/endpoints.api.models");
 
-exports.getEndpoints = (req, res, next) => {
-  getJsonDescriptions()
-    .then((descriptions) => {
-      res.status(200).send({ descriptions });
-    })
-    .catch(next);
+exports.getEndpoints = async (req, res, next) => {
+  try {
+    const endpointsShow = await fetchEndpoints();
+    res.status(200).send(endpointsShow);
+  } catch (err) {
+    next(err);
+  }
 };

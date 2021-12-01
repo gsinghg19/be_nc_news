@@ -1,18 +1,20 @@
-const { selectTopics, selectTopicById } = require("../models/topic.model");
+const { showAllTopics, insertNewTopic } = require("../models/topic.model");
 
-exports.getTopics = (req, res, next) => {
-  selectTopics()
-    .then((topics) => {
-      res.status(200).send({ topics });
-    })
-    .catch(next);
+exports.getTopics = async (req, res, next) => {
+  try {
+    const topics = await showAllTopics();
+    res.status(200).send({ topics });
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.getTopicById = (req, res, next) => {
-  const { slug } = req.params;
-  selectTopicById(slug)
-    .then((topic) => {
-      res.status(200).send({ topic });
-    })
-    .catch(next);
+exports.postNewTopic = async (req, res, next) => {
+  try {
+    const newTopicInfo = req.body;
+    const newTopic = await insertNewTopic(newTopicInfo);
+    res.status(201).send({ newTopic });
+  } catch (err) {
+    next(err);
+  }
 };

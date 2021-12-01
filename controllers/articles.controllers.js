@@ -1,33 +1,58 @@
 const {
-  selectArticleById,
-  selectArticles,
-  updateArticleById,
+  fetchArticle,
+  updateArticleVotesById,
+  updateArticleBodyByArticleId,
+  fetchAllArticles,
 } = require("../models/article.models");
 
-exports.getArticleById = (req, res, next) => {
-  const { article_id } = req.params;
-  selectArticleById(article_id)
-    .then((article) => {
-      res.status(200).send({ article });
-    })
-    .catch(next);
+exports.getArticleById = async (req, res, next) => {
+  try {
+    const { article_id } = req.params;
+    const articleItem = await fetchArticle(article_id);
+    res.status(200).send(articleItem);
+  } catch (err) {
+    next(err);
+  }
 };
-
-exports.patchArticleById = (req, res, next) => {
-  const { article_id } = req.params;
-  const body = req.body;
-  updateArticleById(article_id, body)
-    .then((article) => {
-      res.status(200).send({ article });
-    })
-    .catch(next);
+exports.patchArticleById = async (req, res, next) => {
+  try {
+    if (Object.keys(req.body).length > 1) {
+      res.status(400).send({ msg: "Bad Request" });
+    }
+    const { article_id } = req.params;
+    let patchInfo = req.body.inc_votes;
+    if (req.body.body) {
+      patchInfo = req.body.body;
+      const updatedArticle = await updateArticleBodyByArticleId(
+        article_id,
+        patchInfo
+      );
+      res.status(200).send({ article: updatedArticle });
+    } else {
+      const updatedArticle = await updateArticleVotesById(
+        article_id,
+        patchInfo
+      );
+      res.status(200).send({ article: updatedArticle });
+    }
+  } catch (err) {
+    next(err);
+  }
 };
+exports.getAllArticles = async (req, res, next) => {
+  try {
+    const { sort_by, order, topic, limit, p, title } = req.query;
 
-exports.getArticles = (req, res, next) => {
-  const { sort_by, order, topic } = req.query;
-  selectArticles(sort_by, order, topic)
-    .then((articles) => {
-      res.status(200).send({ articles });
-    })
-    .catch(next);
+    const allArticles = await fetchAllArticles(
+      sort_by,
+      order,
+      topic,
+      limit,
+      p,
+      title
+    );
+    res.status(200).send({ allArticles });
+  } catch (err) {
+    next(err);
+  }
 };
