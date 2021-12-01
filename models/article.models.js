@@ -15,7 +15,6 @@ exports.fetchArticle = async (article_id) => {
     [article_id]
   );
   if (result.rows.length === 0) {
-    console.log("line17 hello");
     return Promise.reject({ status: 404, msg: "Article Not Found" });
   }
   return result.rows[0];
