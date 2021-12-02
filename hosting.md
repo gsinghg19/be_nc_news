@@ -155,7 +155,7 @@ Make sure your package.json has this as a start script:
 Commit your changes, and push to heroku master.
 
 ```bash
-git push heroku master
+git push heroku main
 ```
 
 ## 9. Review Your App
