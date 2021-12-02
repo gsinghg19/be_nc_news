@@ -349,4 +349,10 @@ describe("GET api/users", () => {
       });
     });
   });
+  test("404: responds with 404 error message due to invalid URL", async () => {
+    const res = await request(app)
+      .get("/api/uz3rs_is_spelled_incorrect")
+      .expect(404);
+    expect(res.body.msg).toBe("Invalid URL");
+  });
 });
