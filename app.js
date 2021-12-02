@@ -16,6 +16,9 @@ app.use(handleCustomsError);
 app.use(handle500ServerError);
 
 app.all("/*", (req, res) => {
+  if (process.env.NODE_ENV !== "production") {
+    console.log("PARAMS", req.params);
+  }
   res.status(404).send({ msg: "Invalid URL" });
 });
 
