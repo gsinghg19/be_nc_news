@@ -15,8 +15,8 @@ app.use(handlePsqlError);
 app.use(handleCustomsError);
 app.use(handle500ServerError);
 
-// app.all("/*", (req, res) => {
-//   res.status(404).send({ msg: "Invalid URL" });
-// });
+app.all("/*", (req, res) => {
+  res.status(404).send({ msg: "Invalid URL" });
+});
 
 module.exports = app;
