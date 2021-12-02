@@ -6,7 +6,6 @@ We will be building an API for the purpose of accessing application data program
 
 Your database will be PSQL, and you will interact with it using [node-postgres](https://node-postgres.com/).
 
-
 ## Step 1 - Setting up your project
 
 You will need to create _two_ `.env` files for your project: `.env.test` and `.env.development`. Into each, add `PGDATABASE=<database_name_here>`, with the correct database name for that environment (see `/db/setup.sql` for the database names). Double check that these `.env` files are .gitignored.

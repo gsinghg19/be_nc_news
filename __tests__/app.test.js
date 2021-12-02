@@ -338,3 +338,15 @@ describe("DELETE /api/comments/:comment_id", () => {
     expect(body.msg).toBe("Not Found");
   });
 });
+
+describe("GET api/users", () => {
+  test("200: responds with objects of usernames in an array", async () => {
+    const { body } = await request(app).get("/api/users").expect(200);
+    expect(body.allTheUsers.length).toBeGreaterThan(0);
+    body.allTheUsers.forEach((user) => {
+      expect(user).toMatchObject({
+        username: expect.any(String),
+      });
+    });
+  });
+});
