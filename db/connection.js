@@ -1,7 +1,7 @@
 const { Pool } = require("pg");
 const ENV = process.env.NODE_ENV || "development";
 
-console.log(process.env.DATABASE_URL, "<<<<<line4>>>>>");
+//console.log(process.env.DATABASE_URL, "<<<<<line4>>>>>");
 
 require("dotenv").config({
   path: `${__dirname}/../.env.${ENV}`,
