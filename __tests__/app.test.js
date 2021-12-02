@@ -356,3 +356,24 @@ describe("GET api/users", () => {
     expect(res.body.msg).toBe("Invalid URL");
   });
 });
+
+describe("GET api/users/:username", () => {
+  test("200: response is correctly returned with a chosen user object", async () => {
+    const { body } = await request(app)
+      .get("/api/users/butter_bridge")
+      .expect(200);
+    expect(body.user).toMatchObject([
+      {
+        username: expect.any(String),
+        avatar_url: expect.any(String),
+        name: expect.any(String),
+      },
+    ]);
+  });
+  test("400: response for invalid username", async () => {
+    const { body } = await request(app)
+      .get("/api/users/notAUzz3rYo9")
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+});
