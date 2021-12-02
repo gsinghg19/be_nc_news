@@ -97,7 +97,7 @@ describe("PATCH /api/articles/:article_id", () => {
   test("400: bad article_id", async () => {
     const articleUpdate = { inc_votes: 25 };
     const { body } = await request(app)
-      .patch("/api/articles/whatabadarticleyouare")
+      .patch("/api/articles/thisarticleaintnogood")
       .send(articleUpdate)
       .expect(400);
     expect(body.msg).toBe("Bad Request");
@@ -113,7 +113,7 @@ describe("PATCH /api/articles/:article_id", () => {
   });
   test("400: Other property on request body", async () => {
     const article_id = 1;
-    const articleUpdate = { inc_votes: 5, favourite_bucket: "medium bucket" };
+    const articleUpdate = { inc_votes: 5, piece_of_pie: "all the pies" };
     const { body } = await request(app)
       .patch(`/api/articles/${article_id}`)
       .send(articleUpdate)
@@ -188,7 +188,7 @@ describe("GET /api/articles", () => {
   });
   test("400: the order is neither ascending or descending", async () => {
     const { body } = await request(app)
-      .get(`/api/articles?order=lots_of_stuff_going_wrong`)
+      .get(`/api/articles?order=i_dont_think_this_should_be_happening`)
       .expect(400);
     expect(body.msg).toBe("Bad Request");
   });
@@ -232,7 +232,7 @@ describe("GET /api/articles/:article_id/comments", () => {
     expect(body.msg).toBe("Not Found");
   });
   test("400: Bad request for invalid article_id", async () => {
-    const article_id = "splatoon";
+    const article_id = "starbucks";
     const { body } = await request(app)
       .get(`/api/articles/${article_id}/comments`)
       .expect(400);
