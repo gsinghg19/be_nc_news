@@ -3,9 +3,9 @@ const apiRouter = express.Router();
 const articlesRouter = require("./articles.router");
 const topicsRouter = require("./topics.router");
 const commentsRouter = require("./comments.Router");
+const usersRouter = require("./users.router");
 
 const { getEndpoints } = require("../controllers/api.controller");
-const usersRouter = require("./users.router");
 
 apiRouter.use("/topics", topicsRouter);
 apiRouter.use("/articles", articlesRouter);

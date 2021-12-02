@@ -46,3 +46,28 @@ exports.removeCommentByCommentId = async (comment_id) => {
   }
   return Promise.reject({ status: 404, msg: "Not Found" });
 };
+
+exports.updateCommentById = async (comment_id, patchCommentInfo) => {
+  const result = await db.query(
+    `Update comments SET votes = $1 + votes WHERE comment_id =$2 RETURNING*;`,
+    [comment_id, patchCommentInfo]
+  );
+  if (result.rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "Not Found" });
+  }
+  if (result.rows[0].votes === null) {
+    return Promise.reject({ status: 400, msg: "Bad Request" });
+  }
+  return result.rows;
+};
+
+exports.updateCommentBodyByCommentId = async (comment_id, patchInfo) => {
+  const result = await db.query(
+    `UPDATE comments SET body = $1 WHERE comment_id = $2 RETURNING*;`,
+    [patchInfo, comment_id]
+  );
+  if (result.rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "Not Found" });
+  }
+  return result.rows;
+};
