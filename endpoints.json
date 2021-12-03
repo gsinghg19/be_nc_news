@@ -23,5 +23,51 @@
         }
       ]
     }
+  },
+
+  "GET /api/articles/:article_id": {
+    "description": "serves an article object",
+    "queries": [],
+    "exampleResponse": {
+      "article": {
+        "author": "jessjelly",
+        "title": "Running a Node App",
+        "article_id": 1,
+        "body": "This is part two of a series on how to get up and running with Systemd and Node.js. This part dives deeper into how to successfully run your app with systemd long-term, and how to set it up in a production environment.",
+        "topic": "coding",
+        "created_at": "2020-11-07T06:03:00.000Z",
+        "votes": 0,
+        "comment_counts": 8
+      }
+    }
+  },
+
+  "PATCH /api/articles/:article_id": {
+    "description": "accepts update object and responds with updated object",
+    "queries": [],
+    "exampleResponse": {
+      "article": {
+        "author": "jessjelly",
+        "title": "Making sense of Redux",
+        "article_id": 4,
+        "body": "When I first started learning React, I remember reading lots of articles about the different technologies associated with it. In particular, this one article stood out. It mentions how confusing the ecosystem is, and how developers often feel they have to know ALL of the ecosystem before using React. And as someone who’s used React daily for the past 8 months or so, I can definitely say that I’m still barely scratching the surface in terms of understanding how the entire ecosystem works! But my time spent using React has given me some insight into when and why it might be appropriate to use another technology — Redux (a variant of the Flux architecture).",
+        "topic": "coding",
+        "created_at": "2020-09-11T20:12:00.000Z",
+        "votes": 0
+      }
+    }
+  },
+
+  "GET /api/articles/:article_id/comments": {
+    "description": "serves an array of all comments about a given article",
+    "queries": [],
+    "exampleResponse": {
+      "comments": {
+        "comment_id": 31,
+        "votes": 11,
+        "body": "Sit sequi odio suscipit. Iure quisquam qui alias distinctio eos officia enim aut sit. Corrupti ut praesentium ut iste earum itaque qui. Dolores in ab rerum consequuntur. Id ab aliquid autem dolore.",
+        "created_at": "2020-09-26T16:16:00.000Z"
+      }
+    }
   }
 }
