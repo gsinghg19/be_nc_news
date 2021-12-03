@@ -13,15 +13,15 @@ PostgreSQL version 14.0
 
 #### The listed dependencies below are required
 
-• express
-• dotenv
-• jest
-• pg
-• pg-format
-• jest
-• jest-sorted
-• nodemon
-• supertest
+- express
+- dotenv
+- jest
+- pg
+- pg-format
+- jest
+- jest-sorted
+- nodemon
+- supertest
 
 ### **Cloning Code**
 
@@ -46,13 +46,14 @@ This will install the required dependencies listed previously.
 ### **Creating .env files**
 
 In order to use node-postgres to connect to different databases, we need to create two .env files in the root directory.
-• .env.development, which contains:
+
+- .env.development, which contains:
 
 ```
 PGDATABASE=nc_news
 ```
 
-• .env.test, which contains:
+- .env.test, which contains:
 
 ```
 PGDATABASE=nc_news_test
