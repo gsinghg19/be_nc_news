@@ -6,32 +6,27 @@ on:
 
 jobs:
   test:
-    name:Test
-    runs-on: ubuntu-latest
-
-
-  tests:
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - name: checkout Repo
         uses: actions/checkout@v2
       - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-        node-version: 15
+        uses: actions/setup-node@v2
       - name: Use PostgreSQL
         uses: harmon758/postgresql-action@v1
         with:
-          postgresql db: 'nc_news'
+          postgresql db: 'my_db'
           postgresql user: 'test_user'
           postgresql password: 'test_password'
       - name: Install dependencies
         run: npm ci
       - name: Run tests
-      run: PGDATABASE=nc_news PGUSER=test_user PGPASWORD=test_password npm t
+        run: PGDATABASE=nc_news PGUSER=test_user PGPASWORD=test_password npm t
 
   deploy:
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
