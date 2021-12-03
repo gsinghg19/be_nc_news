@@ -14,7 +14,7 @@ describe("GET /api", () => {
   });
   test("404: Invalid URL returns 404 error and message", async () => {
     const res = await request(app).get("/api/madeupapi").expect(404);
-    expect(res.body.msg).toBe("Hello And welcome to my api");
+    expect(res.body.msg).toBe("Invalid URL");
   });
 });
 describe("GET /api/topics", () => {
@@ -353,7 +353,7 @@ describe("GET api/users", () => {
     const res = await request(app)
       .get("/api/uz3rs_is_spelled_incorrect")
       .expect(404);
-    expect(res.body.msg).toBe("Hello And welcome to my api");
+    expect(res.body.msg).toBe("Invalid URL");
   });
 });
 
