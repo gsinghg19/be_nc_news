@@ -381,10 +381,10 @@ describe("GET api/users/:username", () => {
 describe("PATCH /api/comments/:comment_id", () => {
   test("200: Accepts update object and responds with updated comment", async () => {
     const comment_id = 3;
-    const commentUpdate = { inc_votes: 100 };
+    const updatedComment = { inc_votes: 100 };
     const { body } = await request(app)
       .patch(`/api/comments/${comment_id}`)
-      .send(commentUpdate)
+      .send(updatedComment)
       .expect(200);
     expect(body.comment).toMatchObject([
       {
