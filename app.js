@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const apiRouter = require("./routers/api.Router");
-
 const {
   handlePsqlError,
   handleCustomsError,
@@ -16,7 +15,7 @@ app.use(handleCustomsError);
 app.use(handle500ServerError);
 
 app.all("/*", (req, res) => {
-  res.status(404).send({ msg: "Invalid URL" });
+  res.status(404).send({ msg: "Hello And welcome to my api" });
 });
 
 module.exports = app;

@@ -14,7 +14,7 @@ describe("GET /api", () => {
   });
   test("404: Invalid URL returns 404 error and message", async () => {
     const res = await request(app).get("/api/madeupapi").expect(404);
-    expect(res.body.msg).toBe("Invalid URL");
+    expect(res.body.msg).toBe("Hello And welcome to my api");
   });
 });
 describe("GET /api/topics", () => {
@@ -209,7 +209,7 @@ describe("GET /api/articles", () => {
 });
 
 describe("GET /api/articles/:article_id/comments", () => {
-  test("200: Responds with an array of comments for given article", async () => {
+  test("200: Responds with an array of comments for a given article", async () => {
     const article_id = 1;
     const { body } = await request(app)
       .get(`/api/articles/${article_id}/comments`)
@@ -353,7 +353,7 @@ describe("GET api/users", () => {
     const res = await request(app)
       .get("/api/uz3rs_is_spelled_incorrect")
       .expect(404);
-    expect(res.body.msg).toBe("Invalid URL");
+    expect(res.body.msg).toBe("Hello And welcome to my api");
   });
 });
 
