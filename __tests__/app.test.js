@@ -383,7 +383,7 @@ describe("PATCH /api/comments/:comment_id", () => {
     const comment_id = 3;
     const updatedComment = { inc_votes: 100 };
     const { body } = await request(app)
-      .patch(`/api/comments/${comment_id}`)
+      .patch(`/api/comments/3`)
       .send(updatedComment)
       .expect(200);
     expect(body.comment).toMatchObject([
