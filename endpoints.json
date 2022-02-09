@@ -82,5 +82,37 @@
       "created_at": "2020-08-15T18:11:00.000Z",
       "body": "Dicta aut quo unde cupiditate dolorum. Voluptas mollitia exercitationem vel porro dolor. Ea autem est pariatur."
     }
+  },
+
+  "PATCH /api/comments/:comments_id": {
+    "description": "Add a new comment to a specific article ",
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 19,
+        "author": "butter_bridge",
+        "article_id": 1,
+        "votes": 0,
+        "created_at": "2020-01-02T23:53:13.267Z",
+        "body": "Test comment"
+      }
+    }
+  },
+
+  "DELETE /api/comments/:comment_id": {
+    "description": "Deletes comment linked to specific comment ID ",
+    "queries": [],
+    "exampleResponse": "No response returned"
+  },
+
+  "GET /api/users/:username": {
+    "description": "Serves an object containing the specific users information",
+    "queries": [],
+    "exampleResponse": {
+      "user": {
+        " username": "tickle122",
+        "name": "Tom Tickle",
+        "avatar_url": "https://vignette.wikia.nocookie.net/mrmen/images/d/d6/Mr-Tickle-9a.png/revision/latest?cb=20180127221953"
+      }
+    }
   }
 }

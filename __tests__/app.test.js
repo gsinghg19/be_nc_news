@@ -388,11 +388,12 @@ describe("PATCH /api/comments/:comment_id", () => {
       .expect(200);
     expect(body.comment).toMatchObject([
       {
-        body: expect.any(String),
-        votes: expect.any(Number),
+        comment_id: expect.any(Number),
         author: expect.any(String),
         article_id: expect.any(Number),
+        votes: expect.any(Number),
         created_at: expect.any(String),
+        body: expect.any(String),
       },
     ]);
   });
