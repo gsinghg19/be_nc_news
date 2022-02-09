@@ -67,7 +67,6 @@ exports.fetchAllArticles = async (
   queryStr += ` ORDER BY ${checkedSortBy} ${checkedOrder} LIMIT $1 OFFSET $2;`;
   const result = await db.query(queryStr, queryValues);
   return result.rows;
-  //add total_count for pagination after lunch****
 };
 
 exports.updateArticleBodyByArticleId = async (article_id, patchInfo) => {
