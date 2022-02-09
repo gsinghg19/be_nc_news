@@ -56,10 +56,7 @@
 
   "GET /api/articles/:article_id/comments": {
     "description": "serves an array of all comments about a given article",
-    "queries": [
-      "sort_by - Any valid column name, defaults to created_at",
-      "order - defaults to descending"
-    ],
+    "queries": [],
     "exampleResponse": {
       "comments": {
         "comment_id": 31,
