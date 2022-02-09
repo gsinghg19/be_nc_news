@@ -1,7 +1,6 @@
 const express = require("express");
-
-const apiRouter = require("./routers/api.Router");
 const cors = require("cors");
+const apiRouter = require("./routers/api.Router");
 const {
   handlePsqlError,
   handleCustomsError,
@@ -11,10 +10,12 @@ const {
 const app = express();
 app.use(express.json());
 
+//cross origin resource sharing
 app.use(cors());
 
 app.use("/api", apiRouter);
 
+// Error handlers
 app.use(handlePsqlError);
 app.use(handleCustomsError);
 app.use(handle500ServerError);

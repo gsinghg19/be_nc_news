@@ -5,7 +5,6 @@ const {
   postNewTopic,
 } = require("../controllers/topics.controllers");
 
-topicsRouter.route("/").get(getTopics);
-topicsRouter.route("/").post(postNewTopic);
+topicsRouter.route("/").get(getTopics).post(postNewTopic);
 
 module.exports = topicsRouter;

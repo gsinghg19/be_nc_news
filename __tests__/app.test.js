@@ -379,6 +379,18 @@ describe("GET api/users/:username", () => {
 });
 
 describe("PATCH /api/comments/:comment_id", () => {
+  test("404: Error in update object and responds with updated comment not found error code 404", async () => {
+    const comment_id = 333232323;
+    const updatedComment = { inc_votes: 100 };
+    const { body } = await request(app)
+      .patch(`/api/comments/33232323`)
+      .send(updatedComment)
+      .expect(404);
+    expect(body.msg).toBe("Not Found");
+  });
+});
+
+describe("PATCH /api/comments/:comment_id", () => {
   test("200: Accepts update object and responds with updated comment", async () => {
     const comment_id = 3;
     const updatedComment = { inc_votes: 100 };
