@@ -47,7 +47,6 @@ exports.patchCommentById = async (req, res, next) => {
   try {
     if (Object.keys(req.body).length > 1) {
       res.status(400).send({ msg: "Bad Request" });
-      console.log("line 50", msg);
     }
     const { comment_id } = req.params;
     let patchInfo = req.body.inc_votes;
