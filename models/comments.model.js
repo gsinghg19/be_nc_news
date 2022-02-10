@@ -26,6 +26,7 @@ exports.insertCommentByArticleId = async (article_id, newCommentInfo) => {
   const userExists = await db.query(`SELECT * FROM users WHERE username = $1`, [
     username,
   ]);
+
   if (articleExists.rows.length === 0 || userExists.rows.length === 0) {
     return Promise.reject({ status: 404, msg: "Not Found" });
   }
