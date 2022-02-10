@@ -16,9 +16,7 @@ articlesRouter
   .get(getArticleById)
   .patch(patchArticleById);
 
-articlesRouter
-  .route("/:article_id/comments")
-  .get(getCommentsByArticleId)
-  .post(postCommentByArticleId);
+articlesRouter.route("/:article_id/comments").get(getCommentsByArticleId);
+articlesRouter.route("/:article_id/comments").post(postCommentByArticleId);
 
 module.exports = articlesRouter;
