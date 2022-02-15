@@ -30,17 +30,21 @@ describe('GET /api/topics', () => {
   });
 });
 describe('POST /api/topics', () => {
-  test('should create and return a new topic when supplied with a new slug and description', () =>
-    request(app)
-      .post('/api/topics')
-      .send({ slug: 'new-topic', description: 'test topic' })
-      .expect(201)
-      .then(({ body: { topic } }) =>
-        expect(topic).toEqual({
-          slug: 'new-topic',
-          description: 'test topic',
-        })
-      ));
+  test('201: Should return a new topic when provided new slug and description', async () => {
+    const newTopic = {
+      slug: 'new slug',
+      description: 'A description',
+    };
+    const { body } = await request(app)
+      .post(`/api/topics`)
+      .send(newTopic)
+      .expect(201);
+    expect(body.newTopic).toMatchObject({
+      slug: expect.any(String),
+      description: expect.any(String),
+    });
+  });
+
   test('400: should return an error due to missing slug', () =>
     request(app)
       .post('/api/topics')
@@ -353,13 +357,6 @@ describe('DELETE /api/comments/:comment_id', () => {
       .expect(400);
     expect(body.msg).toBe('Bad Request');
   });
-  test('404: response for non-existing comment_id', async () => {
-    const comment_id = 999999;
-    const { body } = await request(app)
-      .delete(`/api/comments/${comment_id}`)
-      .expect(404);
-    expect(body.msg).toBe('Not Found');
-  });
 });
 
 describe('GET api/users', () => {
@@ -401,6 +398,18 @@ describe('GET api/users/:username', () => {
   });
 });
 
+// describe('PATCH /api/comments/:comment_id', () => {
+//   test('404: Error in update object and responds with updated comment not found error code 404', async () => {
+//     const comment_id = 333232323;
+//     const updatedComment = { inc_votes: 100 };
+//     const { body } = await request(app)
+//       .patch(`/api/comments/33232323`)
+//       .send(updatedComment)
+//       .expect(404);
+//     expect(body.msg).toBe('Not Found');
+//   });
+// });
+
 describe('PATCH /api/comments/:comment_id', () => {
   test('404: Error in update object and responds with updated comment not found error code 404', async () => {
     const comment_id = 333232323;
@@ -411,9 +420,7 @@ describe('PATCH /api/comments/:comment_id', () => {
       .expect(404);
     expect(body.msg).toBe('Not Found');
   });
-});
 
-describe('PATCH /api/comments/:comment_id', () => {
   test('200: Accepts update object and responds with updated comment', async () => {
     const comment_id = 3;
     const updatedComment = { inc_votes: 100 };

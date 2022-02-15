@@ -37,15 +37,20 @@ exports.insertCommentByArticleId = async (article_id, newCommentInfo) => {
 };
 
 exports.removeCommentByCommentId = async (comment_id) => {
-  const result = await db.query(
-    `DELETE FROM comments WHERE comment_id = $1 RETURNING *;`,
-    [comment_id]
-  );
-  if (result.rows.length !== 0) {
-    return result.rows.length[0];
-  }
-  return Promise.reject({ status: 404, msg: 'Not Found' });
+  // console.log(removeCommentByCommentId);
+  const result = await db.query(`DELETE FROM comments WHERE comment_id = $1;`, [
+    comment_id,
+  ]);
+
+  return result.rows[0];
 };
+
+// exports.deleteCommentByCommentId = async (comment_id) => {
+//   const result = await db.query(`DELETE FROM comments WHERE comment_id = $1;`, [
+//     comment_id,
+//   ]);
+//   return result.rows === 1;
+// };
 
 exports.updateCommentById = async (comment_id, patchCommentInfo) => {
   const result = await db.query(

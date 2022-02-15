@@ -8,7 +8,7 @@ const {
 exports.getArticleById = async (req, res, next) => {
   try {
     const { article_id } = req.params;
-    console.log(article_id);
+    // console.log(article_id);
     const articleItem = await fetchArticle(article_id);
     res.status(200).send(articleItem);
   } catch (err) {

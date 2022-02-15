@@ -4,12 +4,11 @@ const {
   removeCommentByCommentId,
   updateCommentById,
   updateCommentBodyByCommentId,
-} = require("../models/comments.model");
+} = require('../models/comments.model');
 
 exports.getCommentsByArticleId = async (req, res, next) => {
   try {
     const { article_id } = req.params;
-    //console.log("line6<<<<>>>>", req);
     const commentsByArticleId = await fetchCommentsByArticleId(article_id);
     res.status(200).send({ commentsByArticleId });
   } catch (err) {
@@ -31,22 +30,19 @@ exports.postCommentByArticleId = async (req, res, next) => {
   }
 };
 
-exports.deleteCommentByCommentId = async (req, res, next) => {
-  try {
-    const { comment_id } = req.params;
-    //console.log(req.params);
-    const deletedComment = await removeCommentByCommentId(comment_id);
-
-    res.status(204).send();
-  } catch (err) {
-    next(err);
-  }
+exports.deleteCommentByCommentId = (req, res, next) => {
+  removeCommentByCommentId(req.params.comment_id)
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch(next);
+  console.log(req.params.comment_id);
 };
 
 exports.patchCommentById = async (req, res, next) => {
   try {
     if (Object.keys(req.body).length > 1) {
-      res.status(400).send({ msg: "Bad Request" });
+      res.status(400).send({ msg: 'Bad Request' });
     }
     const { comment_id } = req.params;
     let patchInfo = req.body.inc_votes;
