@@ -14,7 +14,8 @@
   "jest": {
     "setupFilesAfterEnv": [
       "jest-sorted"
-    ]
+    ],
+    "verbose": true
   },
   "repository": {
     "type": "git",

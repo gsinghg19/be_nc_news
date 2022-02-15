@@ -1,4 +1,4 @@
-const db = require("../db/connection");
+const db = require('../db/connection');
 
 exports.fetchCommentsByArticleId = async (article_id) => {
   const result = await db.query(
@@ -11,7 +11,7 @@ exports.fetchCommentsByArticleId = async (article_id) => {
   );
 
   if (articleExists.rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "Not Found" });
+    return Promise.reject({ status: 404, msg: 'Not Found' });
   }
   return result.rows;
 };
@@ -27,7 +27,7 @@ exports.insertCommentByArticleId = async (article_id, newCommentInfo) => {
     username,
   ]);
   if (articleExists.rows.length === 0 || userExists.rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "Not Found" });
+    return Promise.reject({ status: 404, msg: 'Not Found' });
   }
   let result = await db.query(
     `INSERT INTO comments (author, article_id, body) VALUES ($1, $2, $3) RETURNING *;`,
@@ -44,7 +44,7 @@ exports.removeCommentByCommentId = async (comment_id) => {
   if (result.rows.length !== 0) {
     return result.rows.length[0];
   }
-  return Promise.reject({ status: 404, msg: "Not Found" });
+  return Promise.reject({ status: 404, msg: 'Not Found' });
 };
 
 exports.updateCommentById = async (comment_id, patchCommentInfo) => {
@@ -53,10 +53,10 @@ exports.updateCommentById = async (comment_id, patchCommentInfo) => {
     [comment_id, patchCommentInfo]
   );
   if (result.rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "Not Found" });
+    return Promise.reject({ status: 404, msg: 'Not Found' });
   }
   if (result.rows[0].votes === null) {
-    return Promise.reject({ status: 400, msg: "Bad Request" });
+    return Promise.reject({ status: 400, msg: 'Bad Request' });
   }
   return result.rows;
 };
@@ -67,7 +67,7 @@ exports.updateCommentBodyByCommentId = async (comment_id, patchInfo) => {
     [patchInfo, comment_id]
   );
   if (result.rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "Not Found" });
+    return Promise.reject({ status: 404, msg: 'Not Found' });
   }
   return result.rows;
 };

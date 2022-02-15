@@ -40,29 +40,29 @@ exports.formatCommentsData = (commentData) => {
 };
 
 exports.checkSortByExists = (sort_by) => {
-  if (sort_by === undefined) return "created_at";
+  if (sort_by === undefined) return 'created_at';
   const validInput = [
-    "author",
-    "title",
-    "article_id",
-    "topic",
-    "created_at",
-    "votes",
-    "comment_count",
+    'author',
+    'title',
+    'article_id',
+    'topic',
+    'created_at',
+    'votes',
+    'comment_count',
   ];
   if (validInput.includes(sort_by) === true) {
     return sort_by;
   }
-  return Promise.reject({ status: 400, msg: "Bad Request" });
+  return Promise.reject({ status: 400, msg: 'Bad Request' });
 };
 
 exports.checkOrderExists = (order) => {
-  if (order === undefined) return "DESC";
-  const validInput = ["asc", "desc"];
+  if (order === undefined) return 'DESC';
+  const validInput = ['asc', 'desc'];
   if (validInput.includes(order) === true) {
     return order.toUpperCase();
   }
-  return Promise.reject({ status: 400, msg: "Bad Request" });
+  return Promise.reject({ status: 400, msg: 'Bad Request' });
 };
 
 exports.dbSearch = (column, search) => {
