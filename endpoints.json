@@ -12,6 +12,9 @@
   "GET /api/articles": {
     "description": "serves an array of all articles",
     "queries": ["author", "topic", "sort_by", "order"],
+    "exampleQuery": ["?sort_by=article_id&order=desc&limit=3&p=2"],
+    "exampleQuery2": ["?title=node"],
+    "exampleQuery3": ["?sort_by=topic&topic=coding"],
     "exampleResponse": {
       "articles": [
         {
